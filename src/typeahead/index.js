@@ -102,7 +102,7 @@ var Typeahead = React.createClass({
     this.props.onOptionSelected(option);
   },
 
-  _onTextEntryUpdated: function() {
+  _onTextEntryUpdated: function(event) {
     var value = this.refs.entry.getDOMNode().value;
     this.setState({visible: this.getOptionsForValue(value, this.state.options),
                    selection: null,
