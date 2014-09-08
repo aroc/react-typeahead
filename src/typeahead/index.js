@@ -107,6 +107,9 @@ var Typeahead = React.createClass({
     this.setState({visible: this.getOptionsForValue(value, this.state.options),
                    selection: null,
                    entryValue: value});
+    if (this.props.onChange) {
+      this.props.onChange(event);
+    }
     return false;
   },
 
