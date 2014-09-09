@@ -31,6 +31,7 @@ var Typeahead = React.createClass({
       defaultValue: "",
       placeholder: "",
       inputName: "",
+      value: "",
       onKeyDown: function(event) { return true; },
       onOptionSelected: function(option) { }
     };
@@ -174,6 +175,7 @@ var Typeahead = React.createClass({
     return (
       <div className={classList}>
         <input name={this.props.inputName} ref="entry" type="text"
+          value={this.props.value}
           placeholder={this.props.placeholder}
           className={inputClassList} defaultValue={this.state.entryValue}
           onChange={this._onTextEntryUpdated} onKeyDown={this._onKeyDown} />
