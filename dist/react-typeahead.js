@@ -20148,8 +20148,6 @@ var TypeaheadTokenizer = React.createClass({displayName: 'TypeaheadTokenizer',
   },
 
   _onKeyDown: function(event) {
-    event.preventDefault();
-
     // We only care about intercepting backspaces
     if (event.keyCode !== KeyEvent.DOM_VK_BACK_SPACE) {
       return true;
@@ -20167,7 +20165,10 @@ var TypeaheadTokenizer = React.createClass({displayName: 'TypeaheadTokenizer',
         entry.selectionStart == 0) {
       this._removeTokenForValue(
         this.state.selected[this.state.selected.length - 1]);
+      return false;
     }
+
+    return true;
   },
 
   _removeTokenForValue: function(value) {
@@ -20245,9 +20246,9 @@ var Token = React.createClass({displayName: 'Token',
       return "";
     }
     return (
-      React.DOM.a({className: "typeahead-token-close", href: "#", onClick: function(e) {
-          e.preventDefault();
+      React.DOM.a({className: "typeahead-token-close", href: "#", onClick: function() {
           this.props.onRemove(this.props.children);
+          return false;
         }.bind(this)}, "×")
     );
   }
@@ -20362,7 +20363,6 @@ var Typeahead = React.createClass({displayName: 'Typeahead',
   },
 
   _onTextEntryUpdated: function(event) {
-    event.preventDefault();
     var value = this.refs.entry.getDOMNode().value;
     this.setState({visible: this.getOptionsForValue(value, this.state.options),
                    selection: null,
@@ -20370,6 +20370,7 @@ var Typeahead = React.createClass({displayName: 'Typeahead',
     if (this.props.onChange) {
       this.props.onChange(event);
     }
+    return false;
   },
 
   _onEnter: function(event) {
@@ -20402,9 +20403,6 @@ var Typeahead = React.createClass({displayName: 'Typeahead',
   },
 
   _onKeyDown: function(event) {
-    // Don't propagate the keystroke back to the DOM/browser
-    event.preventDefault();
-
     // If there are no visible elements, don't perform selector navigation.
     // Just pass this up to the upstream onKeydown handler
     if (!this.refs.sel) {
@@ -20418,6 +20416,8 @@ var Typeahead = React.createClass({displayName: 'Typeahead',
     } else {
       return this.props.onKeyDown(event);
     }
+    // Don't propagate the keystroke back to the DOM/browser
+    return false;
   },
 
   render: function() {
@@ -20434,7 +20434,6 @@ var Typeahead = React.createClass({displayName: 'Typeahead',
     return (
       React.DOM.div({className: classList}, 
         React.DOM.input({name: this.props.inputName, ref: "entry", type: "text", 
-          value: this.props.value, 
           placeholder: this.props.placeholder, 
           className: inputClassList, defaultValue: this.state.entryValue, 
           onChange: this._onTextEntryUpdated, onKeyDown: this._onKeyDown}), 
@@ -20466,7 +20465,7 @@ var TypeaheadOption = React.createClass({displayName: 'TypeaheadOption',
   getDefaultProps: function() {
     return {
       customClasses: {},
-      onClick: function(e) { e.preventDefault(); }
+      onClick: function() { return false; }
     };
   },
 
@@ -20579,11 +20578,12 @@ var TypeaheadSelector = React.createClass({displayName: 'TypeaheadSelector',
 
   _onClick: function(result) {
     this.props.onOptionSelected(result);
+    return false;
   },
 
   _nav: function(delta) {
     if (!this.props.options) {
-      return;
+      return; 
     }
     var newIndex;
     if (this.state.selectionIndex === null) {

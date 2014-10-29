@@ -64,8 +64,6 @@ var TypeaheadTokenizer = React.createClass({
   },
 
   _onKeyDown: function(event) {
-    event.preventDefault();
-
     // We only care about intercepting backspaces
     if (event.keyCode !== KeyEvent.DOM_VK_BACK_SPACE) {
       return true;
@@ -83,7 +81,10 @@ var TypeaheadTokenizer = React.createClass({
         entry.selectionStart == 0) {
       this._removeTokenForValue(
         this.state.selected[this.state.selected.length - 1]);
+      return false;
     }
+
+    return true;
   },
 
   _removeTokenForValue: function(value) {
