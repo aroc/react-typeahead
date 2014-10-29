@@ -68,12 +68,11 @@ var TypeaheadSelector = React.createClass({
 
   _onClick: function(result) {
     this.props.onOptionSelected(result);
-    return false;
   },
 
   _nav: function(delta) {
     if (!this.props.options) {
-      return; 
+      return;
     }
     var newIndex;
     if (this.state.selectionIndex === null) {

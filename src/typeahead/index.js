@@ -104,6 +104,7 @@ var Typeahead = React.createClass({
   },
 
   _onTextEntryUpdated: function(event) {
+    event.preventDefault();
     var value = this.refs.entry.getDOMNode().value;
     this.setState({visible: this.getOptionsForValue(value, this.state.options),
                    selection: null,
@@ -111,7 +112,6 @@ var Typeahead = React.createClass({
     if (this.props.onChange) {
       this.props.onChange(event);
     }
-    return false;
   },
 
   _onEnter: function(event) {
@@ -144,6 +144,9 @@ var Typeahead = React.createClass({
   },
 
   _onKeyDown: function(event) {
+    // Don't propagate the keystroke back to the DOM/browser
+    event.preventDefault();
+
     // If there are no visible elements, don't perform selector navigation.
     // Just pass this up to the upstream onKeydown handler
     if (!this.refs.sel) {
@@ -157,8 +160,6 @@ var Typeahead = React.createClass({
     } else {
       return this.props.onKeyDown(event);
     }
-    // Don't propagate the keystroke back to the DOM/browser
-    return false;
   },
 
   render: function() {
